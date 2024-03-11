@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Cocolis</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
+  <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
+  <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+  <%= javascript_importmap_tags %>
+</head>
+<body class="bg-gray-100">
+<main class="flex min-h-screen">
+
+  <!-- Sidebar -->
+  <nav class="w-64 p-4 bg-gray-800 text-gray-100">
+    <div class="flex flex-col items-center">
+      <%= image_tag 'logo.png', class: 'w-16 mb-4' %>
+      <h1 class="text-xl font-bold">Cocolis Admin</h1>
+    </div>
+    <ul class="mt-10">
+      <%# Link items %>
+      <li class="mt-2">
+        <%= link_to admin_path, class: "flex items-center px-4 py-2 rounded hover:bg-gray-200" do %>
+          <%= icon('fa-solid', 'gauge-high', class: "mr-2") %> <span>Dashboard</span>
+        <% end %>
+      </li>
+      <li class="mt-2">
+        <%= link_to admin_packages_path, class: "flex items-center px-4 py-2 rounded hover:bg-gray-700" do %>
+          <%= icon('fa-solid', 'archive', class: "mr-2") %> <span>Packages</span>
+        <% end %>
+      </li>
+      <li class="mt-2">
+        <%= link_to admin_categories_path, class: "flex items-center px-4 py-2 rounded hover:bg-gray-700" do %>
+          <%= icon('fa-solid', 'th', class: "mr-2") %> <span>Categories</span>
+        <% end %>
+      </li>
+      <li class="mt-2">
+        <%= link_to admin_deliveries_path, class: "flex items-center px-4 py-2 rounded hover:bg-gray-700" do %>
+          <%= icon('fa-solid', 'truck-fast', class: "mr-2") %> <span>Deliveries</span>
+        <% end %>
+      </li>
+      <li class="mt-2">
+        <%= link_to destroy_admin_session_path, data: { "turbo-method": :delete, "turbo-confirm": "Are you sure you want to sign out?" }, class: "flex items-center px-4 py-2 rounded hover:bg-gray-700" do %>
+          <%= icon('fa-solid', 'sign-out', class: "mr-2") %> <span>Sign out</span>
+        <% end %>
+      </li>
+    </ul>
+  </nav>
+
+  <!-- Main Content -->
+  <div class="flex-1 p-8">
+    <%= yield %>
+  </div>
+
+</main>
+</body>
+</html>

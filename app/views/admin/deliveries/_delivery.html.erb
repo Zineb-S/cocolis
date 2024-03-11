@@ -1,0 +1,43 @@
+<div id="<%= dom_id delivery %>">
+  <p class="my-5">
+    <strong class="block font-medium mb-1">Client email:</strong>
+    <%= delivery.client_email %>
+  </p>
+
+  <p class="my-5">
+    <strong class="block font-medium mb-1">Driver email:</strong>
+    <%= delivery.driver_email %>
+  </p>
+
+  <p class="my-5">
+    <strong class="block font-medium mb-1">Fulfilled:</strong>
+    <%= delivery.fulfilled %>
+  </p>
+
+  <p class="my-5">
+    <strong class="block font-medium mb-1">Total:</strong>
+    <%= delivery.total %>
+  </p>
+
+  <p class="my-5">
+    <strong class="block font-medium mb-1">Address:</strong>
+    <%= delivery.address %>
+  </p>
+  <% if delivery.delivery_packages.any? %>
+    <strong class="block font-medium mb-1">Products:</strong>
+    <% delivery.delivery_packages.each do |dp| %>
+     Name: <%= dp.package.name %>
+      <br>
+    <%= dp.departureCity %>
+      --->    <%= dp.destinationCity %>
+      <br>
+    At    <%= dp.departureDate %>
+      --->  <%= dp.arrivalDate %>
+    <% end %>
+  <% end %>
+  <% if action_name != "show" %>
+    <%= link_to "Show this delivery", [:admin, delivery], class: "rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
+    <%= link_to "Edit this delivery", edit_admin_delivery_path(delivery), class: "rounded-lg py-3 ml-2 px-5 bg-gray-100 inline-block font-medium" %>
+    <hr class="mt-6">
+  <% end %>
+</div>
