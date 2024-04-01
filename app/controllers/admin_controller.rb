@@ -19,7 +19,10 @@
 
         @deliveries_by_day = Delivery.where('created_at > ?', Time.now - 7.days).order(:created_at)
         @deliveries_by_day = @deliveries_by_day.group_by { |delivery| delivery.created_at.to_date}
-        @revenue_by_day = @deliveries_by_day.map{ |day,deliveries| [day.strftime("%A"),deliveries.sum(&:total)]}
+        @revenue_by_day = @deliveries_by_day.map do |day, deliveries|
+          day_total = deliveries.map(&:total).compact.sum 
+          [day.strftime("%A"), day_total]
+        end
         if @revenue_by_day.count < 7
           days_of_week = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
 
