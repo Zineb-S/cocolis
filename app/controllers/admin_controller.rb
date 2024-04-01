@@ -3,7 +3,7 @@
 
     before_action :authenticate_admin!
     def index
-      @deliveries = Delivery.where(fulfilled: false).where.not(delivery_id:1).order(created_at: :desc).take(5)
+      @deliveries = Delivery.where(fulfilled: false).where.not(id:1).order(created_at: :desc).take(5)
       start_date = 1.week.ago.beginning_of_day
       end_date = Time.now
 
