@@ -1,6 +1,7 @@
 # app/models/delivery.rb
 class Delivery < ApplicationRecord
   belongs_to :driver, class_name: 'User', foreign_key: 'driver_id'
+  belongs_to :client, class_name: 'User', optional: true
 
   has_many :delivery_packages, dependent: :destroy
   has_many :reviews
