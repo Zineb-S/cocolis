@@ -75,8 +75,9 @@ default_driver = User.find_or_create_by!(email: default_driver_email) do |user|
   user.password = 'defaultpassword'
   user.first_name = "Default"
   user.last_name = "Driver"
-  # Set other necessary attributes for the driver...
-  user.role = 'driver' # Adjust this according to how you distinguish drivers in your system
+  user.address = "address"
+  user.credit_card_info = "424242424242"
+  user.role = 1
 end
 puts 'Default driver seeded.'
 
