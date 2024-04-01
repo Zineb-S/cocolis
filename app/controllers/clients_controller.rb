@@ -71,8 +71,8 @@ class ClientsController < ApplicationController
                      quantity: 1,
                    }],
       mode: 'payment',
-      success_url: root_url + "client/messages/#{@delivery_package.id}/details?session_id={CHECKOUT_SESSION_ID}&payment_status=success",
-      cancel_url: root_url + "client/messages/#{@delivery_package.id}/details?payment_status=cancel",
+      success_url: "https://mysite-fwqc.onrender.com/" + "client/messages/#{@delivery_package.id}/details?session_id={CHECKOUT_SESSION_ID}&payment_status=success",
+      cancel_url: "https://mysite-fwqc.onrender.com/" + "client/messages/#{@delivery_package.id}/details?payment_status=cancel",
       )
 
     redirect_to stripe_session.url, allow_other_host: true
