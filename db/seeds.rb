@@ -91,6 +91,7 @@ puts 'Default driver seeded.'
 default_delivery_attributes = {
   # client_id: default_client.id, # Uncomment or modify this line if your model associates deliveries directly with clients
   driver_id: default_driver.id,
+  driver_email: "default.driver@example.com",
   departure_city: "City A",
   arrival_city: "City B",
   departure_date: Date.today,
