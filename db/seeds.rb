@@ -95,8 +95,7 @@ default_delivery_attributes = {
   arrival_city: "City B",
   departure_date: Date.today,
   arrival_date: Date.today + 5.days,
-  # Include any other necessary attributes for your delivery
-}
+  total: 0}
 
 default_delivery = Delivery.find_or_create_by!(default_delivery_attributes) do |delivery|
   # If you need to set attributes that are not part of the unique lookup, set them here.
