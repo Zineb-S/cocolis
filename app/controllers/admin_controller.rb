@@ -8,13 +8,14 @@
       end_date = Time.now
       if @deliveries.count >= 1
         @quick_stats = {
-          sales: Delivery.where(created_at: start_date..end_date).count,
-          revenue: Delivery.where(created_at: start_date..end_date).sum(:total).round(),
-          avg_sale: Delivery.where(created_at: start_date..end_date).average(:total).to_f.round(),
-          per_sale: DeliveryPackage.joins(:delivery).where(deliveries: {created_at: start_date..end_date}).average(:quantity).to_f.round(),
-          total_weight: DeliveryPackage.joins(:delivery).where(deliveries: {created_at: start_date..end_date}).sum(:weight).to_f,
-          total_quantity: DeliveryPackage.joins(:delivery).where(deliveries: {created_at: start_date..end_date}).sum(:quantity)
+          sales: Delivery.where(created_at: start_date..end_date).count || 0,
+          revenue: Delivery.where(created_at: start_date..end_date).sum(:total).round() || 0,
+          avg_sale: Delivery.where(created_at: start_date..end_date).average(:total).to_f.round() || 0,
+          per_sale: DeliveryPackage.joins(:delivery).where(deliveries: {created_at: start_date..end_date}).average(:quantity).to_f.round() || 0,
+          total_weight: DeliveryPackage.joins(:delivery).where(deliveries: {created_at: start_date..end_date}).sum(:weight).to_f || 0,
+          total_quantity: DeliveryPackage.joins(:delivery).where(deliveries: {created_at: start_date..end_date}).sum(:quantity) || 0
         }
+
 
         @deliveries_by_day = Delivery.where('created_at > ?', Time.now - 7.days).order(:created_at)
         @deliveries_by_day = @deliveries_by_day.group_by { |delivery| delivery.created_at.to_date}
