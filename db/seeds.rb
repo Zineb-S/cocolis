@@ -70,7 +70,38 @@ packages_data.each do |pkg_attrs|
   )
 end
 puts 'Packages seeded.'
+default_driver_email = "default.driver@example.com"
+default_driver = User.find_or_create_by!(email: default_driver_email) do |user|
+  user.password = 'defaultpassword'
+  user.first_name = "Default"
+  user.last_name = "Driver"
+  # Set other necessary attributes for the driver...
+  user.role = 'driver' # Adjust this according to how you distinguish drivers in your system
+end
+puts 'Default driver seeded.'
 
+
+# Seed Categories as previously described...
+
+# Seed Packages, ensuring we reference the newly created categories as previously described...
+
+# Seed a default delivery
+# Replace the following attribute values with ones that are appropriate for your Delivery model
+default_delivery_attributes = {
+  # client_id: default_client.id, # Uncomment or modify this line if your model associates deliveries directly with clients
+  driver_id: default_driver.id,
+  departure_city: "City A",
+  arrival_city: "City B",
+  departure_date: Date.today,
+  arrival_date: Date.today + 5.days,
+  # Include any other necessary attributes for your delivery
+}
+
+default_delivery = Delivery.find_or_create_by!(default_delivery_attributes) do |delivery|
+  # If you need to set attributes that are not part of the unique lookup, set them here.
+end
+
+puts 'Default delivery seeded.'
 # Seed Deliveries, DeliveryPackages, Messages, and Reviews
 # Follow a similar pattern to the above, ensuring you reference existing or newly created records appropriately.
 
