@@ -11,6 +11,6 @@ class AddUserIdToPackages < ActiveRecord::Migration[7.1]
     end
 
     # Then you can safely use the id
-    add_reference :packages, :user, null: false, foreign_key: true, default: default_user.id
+    #add_reference :packages, :user, null: false, foreign_key: true, default: default_user.id
   end
 end
