@@ -37,23 +37,24 @@ end
 # Make sure this user exists or adjust according to your needs.
 user_for_packages = User.find_by(id: 1) || users.first
 
-# Seed Categories
+categories = {}
 categories_data = [
   { name: "Gourmet Food & Beverages", description: "This category includes gourmet food items..." },
-# Include other categories as per your data...
+# ... other categories
 ]
 
 categories_data.each do |cat_attrs|
-  Category.find_or_create_by!(name: cat_attrs[:name]) do |category|
-    category.description = cat_attrs[:description]
+  category = Category.find_or_create_by!(name: cat_attrs[:name]) do |c|
+    c.description = cat_attrs[:description]
   end
+  categories[category.name] = category.id
 end
 puts 'Categories seeded.'
 
-# Seed Packages
+# Seed Packages, ensuring we reference the newly created categories
 packages_data = [
-  { name: "Television1", description: "TV", price: 200, category_id: 11, active: 0, weight: 40, dimensions: "120x120x30" },
-# Include other packages as per your data...
+  { name: "Television1", description: "TV", price: 200, active: 0, weight: 40, dimensions: "120x120x30", category_name: "Gourmet Food & Beverages" },
+# ... other packages
 ]
 
 packages_data.each do |pkg_attrs|
@@ -61,7 +62,7 @@ packages_data.each do |pkg_attrs|
     name: pkg_attrs[:name],
     description: pkg_attrs[:description],
     price: pkg_attrs[:price],
-    category_id: pkg_attrs[:category_id],
+    category_id: categories[pkg_attrs[:category_name]], # Lookup the category ID by name
     active: pkg_attrs[:active],
     user_id: user_for_packages.id, # Associate with the user
     weight: pkg_attrs[:weight],
