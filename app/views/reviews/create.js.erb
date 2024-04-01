@@ -1,0 +1,12 @@
+<% if @review.persisted? %>
+// If review saved successfully, you might want to clear the form and show a success message
+$(".review-form").html("<p>Thank you for submitting your review.</p>");
+<% else %>
+// If there are errors, you might want to show them to the user
+var errors = "<ul>";
+<% @review.errors.full_messages.each do |message| %>
+errors += "<li><%= j message %></li>";
+<% end %>
+errors += "</ul>";
+$(".review-errors").html(errors);
+<% end %>

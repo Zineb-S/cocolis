@@ -39,18 +39,7 @@ class Admin::PackagesController < AdminController
     end
   end
 
-  # PATCH/PUT /admin/packages/1 or /admin/packages/1.json
-  /def update
-    respond_to do |format|
-      if @admin_package.update(admin_package_params)
-        format.html { redirect_to admin_package_url(@admin_package), notice: "Package was successfully updated." }
-        format.json { render :show, status: :ok, location: @admin_package }
-      else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @admin_package.errors, status: :unprocessable_entity }
-      end
-    end
-  end/
+
   def update
     @admin_package = Package.find(params[:id])
     if @admin_package.update(admin_package_params.reject { |k| k["images"]})

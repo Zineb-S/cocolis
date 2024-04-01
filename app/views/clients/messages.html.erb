@@ -1,0 +1,29 @@
+<%= render 'layouts/clientnav' %>
+
+<div class="container mx-auto px-4 py-6">
+  <h1 class="text-xl font-semibold mb-4">My Delivery Packages</h1>
+
+  <% if @delivery_packages.any? %>
+    <div class="bg-white p-6 rounded-lg shadow-lg">
+      <% @delivery_packages.each do |delivery_package| %>
+        <div class="border-b pb-4 mb-4">
+          <h2 class="text-lg font-semibold">Package: <%= delivery_package.package.name %></h2>
+          <p>Description: <%= delivery_package.package.description %></p>
+          <p>Price: $<%= delivery_package.package.price %></p>
+          <p>Delivery Address: <%= delivery_package.delivery.address %></p>
+          <p>Delivery Status: <%= delivery_package.delivery.fulfilled ? 'Fulfilled' : 'Pending' %></p>
+          <p>Departure: <%= delivery_package.delivery.departure_city %>, Arrival: <%= delivery_package.delivery.arrival_city %></p>
+          <p>Departure Date: <%= delivery_package.delivery.departure_date %>, Arrival Date: <%= delivery_package.delivery.arrival_date %></p>
+
+          <!-- Link to Message Details -->
+          <%= link_to 'View Messages', client_message_details_path(id: delivery_package.id), class: "inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" %>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <div class="bg-white p-6 rounded-lg shadow-lg">
+      <p>No delivery packages found.</p>
+    </div>
+  <% end %>
+</div>
+<%= button_to 'Sign out', destroy_user_session_path, method: :delete, data: { turbo_confirm: "Are you sure you want to sign out?" }, class: "fixed bottom-2 right-4 bg-red-500 text-white rounded-full px-6 py-2 hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50", form: { class: "inline" } %>

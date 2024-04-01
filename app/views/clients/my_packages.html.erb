@@ -1,0 +1,52 @@
+<%= render 'layouts/clientnav' %>
+
+<div class="max-w-6xl mx-auto px-4 py-8">
+  <h1 class="text-2xl font-bold mb-6">My Packages</h1>
+  <%= link_to 'New Package', new_package_path, class: "mt-4 inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-700 active:bg-blue-900 focus:outline-none focus:border-blue-900 focus:ring ring-blue-300 disabled:opacity-25 transition ease-in-out duration-150" %>
+
+  <% if @packages.any? %>
+    <div class="overflow-x-auto">
+      <table class="min-w-full table-auto text-sm text-left text-gray-500 dark:text-gray-400">
+        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+        <tr>
+          <th class="px-6 py-3">Image</th>
+          <th class="px-6 py-3">Name</th>
+          <th class="px-6 py-3">Description</th>
+          <th class="px-6 py-3">Price</th>
+          <th class="px-6 py-3">Category</th>
+          <th class="px-6 py-3">Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <% @packages.each do |package| %>
+          <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+            <td class="px-6 py-4">
+              <% if package.images.attached? %>
+                <% package.images.each do |image| %>
+                  <%= image_tag image.variant(resize_to_limit: [50, 50]), class: "inline-block h-12 w-12 rounded-full" %>
+                <% end %>
+              <% else %>
+                <span>No Image</span>
+              <% end %>
+            </td>
+            <td class="px-6 py-4 font-medium text-gray-900 dark:text-white"><%= package.name %></td>
+            <td class="px-6 py-4"><%= package.description %></td>
+            <td class="px-6 py-4">$<%= number_with_precision(package.price, precision: 2) %></td>
+            <td class="px-6 py-4"><%= package.category.name %></td>
+            <td class="px-6 py-4">
+              <%= link_to 'Edit', edit_package_path(package), class: 'text-blue-600 hover:text-blue-900 dark:hover:text-blue-500' %>
+              |
+              <%= form_with url: destroy_package_path(package), method: :delete do |form| %>
+                <%= form.submit 'Delete', data: { confirm: 'Are you sure?' }, class: 'text-red-600 hover:text-red-900 dark:hover:text-red-500' %>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+        </tbody>
+      </table>
+    </div>
+  <% else %>
+    <p class="text-gray-700">You have no packages.</p>
+  <% end %>
+
+</div>

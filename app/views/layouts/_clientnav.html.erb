@@ -1,0 +1,21 @@
+<nav class="bg-white shadow mb-6">
+  <div class="container mx-auto px-6 py-4">
+    <div class="flex justify-between items-center">
+      <div class="text-lg font-semibold">Cocolis</div>
+      <div class="hidden md:flex space-x-4">
+        <%= link_to 'Deliveries', client_dashboard_path, class: "text-gray-800 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium" %>
+        <%= link_to 'My Packages', my_packages_path, class: "text-gray-800 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium" %>
+        <%= link_to 'Messages', client_messages_path, class: "text-gray-800 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium" %>
+        <%= link_to 'Profile', client_profile_path, class: "text-gray-800 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium" %>
+      </div>
+      <div class="md:hidden">
+        <!-- Mobile menu button -->
+        <button type="button" class="text-gray-800 hover:text-blue-600 focus:outline-none focus:text-blue-600">
+          <svg class="h-6 w-6 fill-current" viewBox="0 0 24 24">
+            <!-- Mobile menu icon -->
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</nav>

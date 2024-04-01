@@ -1,0 +1,62 @@
+<%= render 'layouts/clientnav' %>
+
+<div class="flex mx-auto px-4 py-6 min-h-screen">
+  <!-- Aside for Status Messages - Left -->
+  <aside class="w-full lg:w-1/4 p-4 mr-4 bg-white shadow-lg rounded-lg">
+    <h2 class="font-bold text-xl mb-4">Delivery Information</h2>
+    <div class="status-messages mb-6">
+      <% if flash[:notice] == "Payment successful." %>
+        <p class="text-sm text-green-600"><%= flash[:notice] %></p>
+      <% elsif @payment_status %>
+        <p class="text-sm text-green-600">Payment successful!</p>
+      <% else %>
+        <%= button_to 'Pay', pay_client_delivery_path(delivery_package_id: @delivery_package.id), method: :get, class: "btn btn-blue" %>
+      <% end %>
+
+      <% if @delivery_package.delivered? && !@delivery_package.received? %>
+        <p class="text-sm text-blue-600">The package has been delivered. Please confirm receipt.</p>
+        <%= link_to 'Mark as Received', client_message_details_path(mark_as_received: true, id: @delivery_package.id), method: :get, class: "btn btn-green" %>
+      <% elsif @delivery_package.received? %>
+        <p class="text-sm text-green-600">You have confirmed receipt of the package. Thank you!</p>
+      <% end %>
+    </div>
+    <% if @delivery_package.received? && @payment_status && !@existing_review %>
+      <div class="review-form">
+        <h3 class="font-bold text-lg mb-2">Leave a Review</h3>
+        <%= form_with(model: Review.new, url: reviews_path, local: true) do |form| %>
+          <%= form.hidden_field :delivery_id, value: @delivery_package.delivery_id %>
+          <%= form.hidden_field :client_id, value: current_user.id %>
+          <%= form.label :timeliness, 'Timeliness (1-5)' %>
+          <%= form.number_field :timeliness, in: 1..5, class: "block w-full mt-1 rounded-md border-gray-300 shadow-sm" %>
+          <%= form.label :communication, 'Communication (1-5)' %>
+          <%= form.number_field :communication, in: 1..5, class: "block w-full mt-1 rounded-md border-gray-300 shadow-sm" %>
+          <%= form.label :handling, 'Handling (1-5)' %>
+          <%= form.number_field :handling, in: 1..5, class: "block w-full mt-1 rounded-md border-gray-300 shadow-sm" %>
+          <%= form.text_area :comment, maxlength: 500, placeholder: "Add a comment...", class: "block w-full mt-1 rounded-md border-gray-300 shadow-sm" %>
+          <%= form.submit "Submit Review", class: "mt-4 inline-flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" %>
+        <% end %>
+      </div>
+    <% end %>
+  </aside>
+  <div class="flex-1">
+    <div class="container mx-auto px-4 py-6">
+      <h1 class="text-xl font-semibold mb-4">Conversation for Package: <%= @delivery_package&.package&.name || "Unknown Package" %></h1>
+      <div class="bg-white p-6 rounded-lg shadow-lg">
+        <% @messages.each do |message| %>
+          <div class="<%= 'text-right' if message.sender_id == current_user.id %> p-2 mb-2">
+            <div class="font-semibold">
+              <%= message.sender_id == current_user.id ? 'You' : message.sender.first_name %>
+            </div>
+            <p><%= message.content %></p>
+          </div>
+        <% end %>
+
+        <%= form_with model: [@delivery_package, Message.new], url: messages_path, method: :post, local: true do |form| %>
+          <%= form.hidden_field :delivery_package_id, value: @delivery_package.id %>
+          <%= form.text_area :content, rows: 4, placeholder: "Type your message here", class: "w-full p-2 border rounded" %>
+          <%= form.submit "Send", class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

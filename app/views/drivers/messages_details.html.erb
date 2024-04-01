@@ -1,0 +1,55 @@
+
+<%= render 'layouts/drivernav' %>
+<div class="container mx-auto px-4 py-6">
+    <div class="flex">
+      <!-- Aside for Delivery Package Information -->
+      <aside class="w-1/4 mr-4 p-4 bg-white shadow-lg rounded-lg">
+        <h2 class="font-bold text-xl mb-4">Delivery Package Information</h2>
+        <p><strong>Package ID:</strong> <%= @delivery_package.id %></p>
+        <p><strong>Status:</strong> <%= @delivery_package.delivered? ? 'Delivered' : 'Pending' %></p>
+        <% if @delivery_package.delivered? %>
+          <p class="text-green-600">The package has been delivered.</p>
+        <% else %>
+          <%= link_to 'Mark as Delivered', driver_message_details_path(id: @delivery_package.id, mark_as_delivered: true), method: :get, class: "btn btn-green" %>
+        <% end %>
+        <% if @delivery_package.received? && @delivery_package.delivered?%>
+          <p class="text-green-600">The client received their package</p>
+        <% end %>
+        <% if @payment.present? %>
+          <p class="text-green-600">Client has paid.</p>
+          <% if @delivery_package.received? %>
+            <p class="text-green-600">Payment has been transferred to you.</p>
+          <% end %>
+        <% else %>
+          <p class="text-red-600">Payment pending.</p>
+        <% end %>
+        <!-- You can add more package details here -->
+      </aside>
+      <!-- Main Content for Messages and Actions -->
+      <div class="flex-1">
+        <!-- Your existing code for displaying messages and actions -->
+        <h1 class="text-xl font-semibold mb-4">Conversation for Package ID: <%= @delivery_package.id %></h1>
+        <!-- Rest of your content -->
+        <div class="bg-white p-6 rounded-lg shadow-lg">
+          <% @messages.each do |message| %>
+            <div class="<%= 'text-right' if message.sender_id == current_user.id %> p-2 mb-2">
+              <div class="font-semibold">
+                <%= message.sender_id == current_user.id ? 'You' : message.sender.first_name %>
+              </div>
+              <p><%= message.content %></p>
+            </div>
+          <% end %>
+
+          <%= form_with(url: messages_path, method: :post, local: true) do |form| %>
+            <%= form.hidden_field :delivery_package_id, value: @delivery_package.id, name: 'message[delivery_package_id]' %>
+            <%= form.text_area :content, rows: 4, placeholder: "Type your message here...", class: "w-full p-2 border rounded", name: 'message[content]' %>
+            <%= form.submit "Send Message", class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" %>
+          <% end %>
+
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <%= button_to 'Sign out', destroy_user_session_path, method: :delete, data: { turbo_confirm: "Are you sure you want to sign out?" }, class: "fixed bottom-2 right-4 bg-red-500 text-white rounded-full px-6 py-2 hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50", form: { class: "inline" } %>

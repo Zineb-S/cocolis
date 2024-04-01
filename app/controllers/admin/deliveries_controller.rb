@@ -48,7 +48,7 @@ class Admin::DeliveriesController < AdminController
     end
   end
 
-  # DELETE /admin/deliveries/1 or /admin/deliveries/1.json
+
   def destroy
     @admin_delivery.destroy!
 
@@ -59,12 +59,10 @@ class Admin::DeliveriesController < AdminController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
     def set_admin_delivery
       @admin_delivery = Delivery.find(params[:id])
     end
 
-    # Only allow a list of trusted parameters through.
     def admin_delivery_params
       params.require(:delivery).permit(:client_email, :driver_email, :fulfilled, :total, :address)
     end

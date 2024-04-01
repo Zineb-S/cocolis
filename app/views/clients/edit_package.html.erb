@@ -1,0 +1,54 @@
+<%= render 'layouts/clientnav' %>
+
+  <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
+    <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+      <div class="p-6 bg-white border-b border-gray-200">
+        <h2 class="text-lg leading-6 font-medium text-gray-900">Edit Package</h2>
+
+        <%= form_with(model: [@package], url: update_package_path(@package), method: :patch, local: true) do |form| %>
+          <div class="mt-4">
+            <%= form.label :name, class: 'block text-sm font-medium text-gray-700' %>
+            <%= form.text_field :name, class: 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm' %>
+          </div>
+
+          <div class="mt-4">
+            <%= form.label :description, class: 'block text-sm font-medium text-gray-700' %>
+            <%= form.text_area :description, rows: 3, class: 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm' %>
+          </div>
+
+          <div class="mt-4">
+            <%= form.label :price, class: 'block text-sm font-medium text-gray-700' %>
+            <%= form.number_field :price, class: 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm' %>
+          </div>
+
+          <div class="mt-4">
+            <%= form.label :category_id, class: 'block text-sm font-medium text-gray-700' %>
+            <%= form.collection_select :category_id, Category.all, :id, :name, {}, {class: 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'} %>
+          </div>
+
+          <%= form.hidden_field :active, value: 1 %>
+
+
+          <div class="mt-4">
+            <%= form.label :images, class: 'block text-sm font-medium text-gray-700' %>
+            <div class="mt-1">
+              <% if @package.images.attached? %>
+                <% @package.images.each_with_index do |image, index| %>
+                  <%= image_tag image.variant(resize_to_limit: [100, 100]), class: "inline-block h-10 w-10 rounded" %>
+                  <%= form.check_box :image_ids, { multiple: true, class: "ml-2"}, image.id, nil %> Remove
+                <% end %>
+              <% end %>
+            </div>
+          </div>
+
+          <div class="mt-4">
+            <%= form.label :new_images, "Add new images", class: 'block text-sm font-medium text-gray-700' %>
+            <%= form.file_field :new_images, multiple: true, direct_upload: true, class: 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm' %>
+          </div>
+          <div class="mt-4">
+            <%= form.submit "Update Package", class: "inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>

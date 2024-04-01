@@ -1,8 +1,8 @@
 class CreateAdminDeliveries < ActiveRecord::Migration[7.1]
   def change
     create_table :deliveries do |t|
-      t.string :client_email
-      t.string :driver_email
+      t.references :client, null: true, foreign_key: { to_table: :users }
+      t.references :driver, null: false, foreign_key: { to_table: :users }
       t.boolean :fulfilled
       t.integer :total
       t.string :address

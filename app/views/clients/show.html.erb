@@ -1,0 +1,35 @@
+
+<%= render 'layouts/clientnav' %>
+<div class="container mx-auto px-4 py-6">
+  <h1 class="text-xl font-semibold mb-4">Delivery Details</h1>
+  <div class="bg-white p-6 rounded-lg shadow-lg">
+    <p><strong>Address:</strong> <%= @delivery.address %></p>
+    <p><strong>Total:</strong> $<%= @delivery.total %></p>
+    <p><strong>Status:</strong> <%= @delivery.fulfilled ? 'Fulfilled' : 'Pending' %></p>
+
+    <% if @delivery.driver %>
+      <p ><strong>Driver:</strong> <%= @delivery.driver.first_name %> <%= @delivery.driver.last_name %></p>
+    <% end %>
+
+    <% if @delivery.delivery_packages.any? && @delivery.delivery_packages.first.package.user %>
+      <p><strong>Client:</strong> <%= @delivery.delivery_packages.first.package.user.first_name %> <%= @delivery.delivery_packages.first.package.user.last_name %></p>
+    <% else %>
+      <p>Client information is unavailable.</p>
+    <% end %>
+    <h2 class="text-lg font-semibold mt-4 mb-2">My available packages</h2>
+    <div class="space-y-4">
+      <% @available_packages.each do |package| %>
+        <div class="border rounded-lg p-4 flex justify-between items-center">
+          <div>
+            <h3 class="font-semibold"><%= package.name %></h3>
+            <p><%= package.description %></p>
+          </div>
+          <!-- Form to link package to this delivery -->
+          <%= form_with url: link_package_to_delivery_clients_path(package_id: package.id, delivery_id: @delivery.id), method: :put, class: "flex items-center" do |form| %>
+            <%= form.submit "Link to this Delivery", class: "inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" %>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

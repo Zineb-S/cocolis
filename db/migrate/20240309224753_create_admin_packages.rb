@@ -6,6 +6,7 @@ class CreateAdminPackages < ActiveRecord::Migration[7.1]
       t.integer :price
       t.references :category, null: false, foreign_key: true
       t.boolean :active
+      t.references :user, null: false, foreign_key: true
 
       t.timestamps
     end

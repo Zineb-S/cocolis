@@ -1,0 +1,15 @@
+<nav class="bg-white shadow">
+  <div class="container mx-auto px-4 py-4 md:flex md:justify-between md:items-center">
+    <div class="text-lg font-semibold">Cocolis</div>
+    <div class="md:flex space-x-4">
+      <%= link_to 'Packages', driver_dashboard_path, class: "text-gray-800 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium" %>
+      <%= link_to 'My Deliveries', driver_deliveries_path, class: "text-gray-800 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium" %>
+      <%= link_to 'Messages', driver_messages_path, class: "text-gray-800 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium" %>
+      <%= link_to 'Profile', driver_profile_path, class: "text-gray-800 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium" %>
+      <!-- Mobile menu button for smaller screens -->
+      <button class="md:hidden text-gray-800 hover:text-blue-600 focus:outline-none focus:text-blue-600">
+        <!-- Hamburger icon or similar for mobile menu -->
+      </button>
+    </div>
+  </div>
+</nav>

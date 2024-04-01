@@ -2,57 +2,57 @@
 <html>
 <head>
   <title>Cocolis</title>
-  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <%= csrf_meta_tags %>
   <%= csp_meta_tag %>
   <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
   <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
   <%= javascript_importmap_tags %>
 </head>
-<body class="bg-gray-100">
-<main class="flex min-h-screen">
+<body class="bg-gray-100 font-sans leading-normal tracking-normal">
 
-  <!-- Sidebar -->
-  <nav class="w-64 p-4 bg-gray-800 text-gray-100">
-    <div class="flex flex-col items-center">
-      <%= image_tag 'logo.png', class: 'w-16 mb-4' %>
-      <h1 class="text-xl font-bold">Cocolis Admin</h1>
+<nav class="bg-teal-800">
+  <div class="px-8 mx-auto max-w-7xl flex justify-between h-16">
+    <div class="flex items-center space-x-4">
+      <%= image_tag 'logo.png', class: 'h-8 w-8' %>
+      <span class="text-xl text-white font-bold">Cocolis Admin</span>
     </div>
-    <ul class="mt-10">
-      <%# Link items %>
-      <li class="mt-2">
-        <%= link_to admin_path, class: "flex items-center px-4 py-2 rounded hover:bg-gray-200" do %>
-          <%= icon('fa-solid', 'gauge-high', class: "mr-2") %> <span>Dashboard</span>
-        <% end %>
-      </li>
-      <li class="mt-2">
-        <%= link_to admin_packages_path, class: "flex items-center px-4 py-2 rounded hover:bg-gray-700" do %>
-          <%= icon('fa-solid', 'archive', class: "mr-2") %> <span>Packages</span>
-        <% end %>
-      </li>
-      <li class="mt-2">
-        <%= link_to admin_categories_path, class: "flex items-center px-4 py-2 rounded hover:bg-gray-700" do %>
-          <%= icon('fa-solid', 'th', class: "mr-2") %> <span>Categories</span>
-        <% end %>
-      </li>
-      <li class="mt-2">
-        <%= link_to admin_deliveries_path, class: "flex items-center px-4 py-2 rounded hover:bg-gray-700" do %>
-          <%= icon('fa-solid', 'truck-fast', class: "mr-2") %> <span>Deliveries</span>
-        <% end %>
-      </li>
-      <li class="mt-2">
-        <%= link_to destroy_admin_session_path, data: { "turbo-method": :delete, "turbo-confirm": "Are you sure you want to sign out?" }, class: "flex items-center px-4 py-2 rounded hover:bg-gray-700" do %>
-          <%= icon('fa-solid', 'sign-out', class: "mr-2") %> <span>Sign out</span>
-        <% end %>
-      </li>
-    </ul>
-  </nav>
+    <div class="flex items-center space-x-4">
 
-  <!-- Main Content -->
-  <div class="flex-1 p-8">
+          <%= link_to '/', class: "block py-1 md:py-3 pl-1 align-middle text-white no-underline hover:text-white border-b-2 border-gray-800 hover:border-blue-500" do %>
+            <%= icon('fa-solid', 'gauge-high', class: "mr-2") %>
+            <span class="pb-1 md:pb-0 text-xs md:text-base text-gray-400 md:text-gray-200 block md:inline-block">Dashboard</span>
+          <% end %>
+
+          <%= link_to admin_packages_path, class: "block py-1 md:py-3 pl-1 align-middle text-white no-underline hover:text-white border-b-2 border-gray-800 hover:border-green-500" do %>
+            <%= icon('fa-solid', 'archive', class: "mr-2") %>
+            <span class="pb-1 md:pb-0 text-xs md:text-base text-gray-400 md:text-gray-200 block md:inline-block">Packages</span>
+          <% end %>
+
+          <%= link_to admin_categories_path, class: "block py-1 md:py-3 pl-1 align-middle text-white no-underline hover:text-white border-b-2 border-gray-800 hover:border-purple-500" do %>
+            <%= icon('fa-solid', 'th', class: "mr-2") %>
+            <span class="pb-1 md:pb-0 text-xs md:text-base text-gray-400 md:text-gray-200 block md:inline-block">Categories</span>
+          <% end %>
+
+          <%= link_to admin_deliveries_path, class: "block py-1 md:py-3 pl-1 align-middle text-white no-underline hover:text-white border-b-2 border-gray-800 hover:border-yellow-500" do %>
+            <%= icon('fa-solid', 'truck-fast', class: "mr-2") %>
+            <span class="pb-1 md:pb-0 text-xs md:text-base text-gray-400 md:text-gray-200 block md:inline-block">Deliveries</span>
+          <% end %>
+
+          <%= link_to destroy_admin_session_path, data: { "turbo-method": :delete, "turbo-confirm": "Are you sure you want to sign out?" }, class: "block py-1 md:py-3 pl-1 align-middle text-white no-underline hover:text-white border-b-2 border-gray-800 hover:border-red-500" do %>
+            <%= icon('fa-solid', 'sign-out', class: "mr-2") %>
+            <span class="pb-1 md:pb-0 text-xs md:text-base text-gray-400 md:text-gray-200 block md:inline-block">Sign out</span>
+          <% end %>
+
+    </div>
+  </div>
+</nav>
+
+
+  <div class="flex justify-between flex-wrap mt-8 px-8">
     <%= yield %>
   </div>
 
-</main>
+
 </body>
 </html>

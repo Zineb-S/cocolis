@@ -1,0 +1,88 @@
+<%= render 'layouts/drivernav' %>
+<style>
+    .slider-img {
+        display: none;
+    }
+
+    .slider-img.is-active {
+        display: block;
+    }
+
+</style>
+<div class="max-w-7xl mx-auto mt-12">
+  <div class="bg-white shadow-xl rounded-lg overflow-hidden flex flex-col md:flex-row">
+    <div class="md:w-1/2 relative">
+      <% if @package.images.attached? %>
+        <div id="slider" class="overflow-hidden">
+          <% @package.images.each_with_index do |image, index| %>
+            <%= image_tag image.variant(resize_to_limit: [500, 500]), class: "slider-img #{'is-active' if index.zero?} w-full h-full object-cover" %>
+          <% end %>
+
+        </div>
+        <% if @package.images.count > 1 %>
+          <button id="slidePrev" class="absolute left-0 top-1/2 transform -translate-y-1/2 bg-gray-800 text-white p-2 rounded-full hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-600">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+            </svg>
+          </button>
+          <button id="slideNext" class="absolute right-0 top-1/2 transform -translate-y-1/2 bg-gray-800 text-white p-2 rounded-full hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-600">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+            </svg>
+          </button>
+        <% end %>
+      <% end %>
+    </div>
+    <div class="md:w-1/2 p-6">
+      <div class="mb-6">
+        <h2 class="text-3xl font-bold mb-2 text-gray-900"><%= @package.name %></h2>
+        <p class="text-gray-700 mb-4"><%= @package.description %></p>
+        <ul class="list-disc pl-5 mb-6 text-gray-700">
+          <li><strong>Price:</strong> $<%= @package.price %></li>
+          <li><strong>Weight:</strong> <%= @package.weight %>kg</li>
+          <li><strong>Dimensions:</strong> <%= @package.dimensions %></li>
+          <li><strong>Category:</strong> <%= @package.category.name if @package.category %></li>
+        </ul>
+      </div>
+
+      <div class="mb-8">
+        <h3 class="text-xl font-semibold mb-3 text-gray-800">Link Delivery</h3>
+        <%= form_with url: assign_delivery_to_package_drivers_path, method: :put, class: "space-y-4" do |form| %>
+          <%= form.hidden_field :package_id, value: @package.id %>
+          <div class="relative">
+            <%= form.select :delivery_id, @deliveries.map { |d| [d.id, d.id] }, {prompt: "Select Delivery"}, {class: "block w-full bg-gray-50 border border-gray-300 rounded-md py-2 pl-3 pr-10 text-base leading-6 text-gray-700 shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"} %>
+            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-500">
+              <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+            </div>
+          </div>
+          <%= form.submit "Link Delivery", class: "mt-3 w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md transition duration-150 ease-in-out" %>
+        <% end %>
+      </div>
+
+      <%= link_to 'Back to packages', driver_dashboard_path, class: "text-blue-600 hover:underline" %>
+    </div>
+  </div>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const images = document.querySelectorAll('.slider-img');
+        let currentIndex = 0;
+
+        function showImage(index) {
+            images.forEach((img, i) => {
+                img.classList.toggle('is-active', i === index);
+            });
+        }
+
+        document.getElementById('slideNext').addEventListener('click', function() {
+            currentIndex = (currentIndex + 1) % images.length;
+            showImage(currentIndex);
+        });
+
+        document.getElementById('slidePrev').addEventListener('click', function() {
+            currentIndex = (currentIndex - 1 + images.length) % images.length;
+            showImage(currentIndex);
+        });
+    });
+
+</script>

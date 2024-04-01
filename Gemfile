@@ -74,3 +74,4 @@ gem "font-awesome-sass" , "~> 6.5.1"
 
 gem "pagy", "~> 7.0"
 gem "aws-sdk-s3" , require:false
+gem 'stripe'

@@ -1,0 +1,85 @@
+<%= render 'layouts/clientnav' %>
+
+<div class="max-w-4xl mx-auto p-5">
+  <h1 class="text-xl font-semibold mb-5">Create New Package</h1>
+
+  <%= form_with(model: @package, url: create_package_path, local: true, class: "space-y-6") do |form| %>
+
+    <div>
+      <%= form.label :name, class: "block text-sm font-medium text-gray-700" %>
+      <%= form.text_field :name, class: "mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm", placeholder: "Package Name" %>
+    </div>
+
+    <div>
+      <%= form.label :description, class: "block text-sm font-medium text-gray-700" %>
+      <%= form.text_area :description, rows: 3, class: "mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm", placeholder: "Description" %>
+    </div>
+
+    <div>
+      <%= form.label :price, class: "block text-sm font-medium text-gray-700" %>
+      <%= form.number_field :price, step: 0.01, class: "mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm", placeholder: "Price" %>
+    </div>
+
+    <div>
+      <%= form.label :category_id, "Category", class: "block text-sm font-medium text-gray-700" %>
+      <%= form.collection_select :category_id, Category.all, :id, :name, {}, {class: "mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"} %>
+    </div>
+
+    <%= form.hidden_field :active, value: 1 %>
+    <%= form.hidden_field :weight, id: "package_weight" %>
+
+    <!-- New field for dimensions -->
+    <div>
+      <%= form.label :dimensions, class: "block text-sm font-medium text-gray-700" %>
+      <%= form.text_field :dimensions, class: "mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm", placeholder: "LxWxH in cm" %>
+    </div>
+
+    <div>
+      <%= form.label :images, class: "block text-sm font-medium text-gray-700" %>
+      <%= form.file_field :images, multiple: true, direct_upload: true, class: "mt-1 block w-full" %>
+    </div>
+
+    <%= form.fields_for :delivery_packages, @package.delivery_packages.build do |dp| %>
+      <div id="package_details" class="mb-4">
+        <h3 class="text-xl font-semibold mb-4">Package Details</h3>
+
+        <div class="flex flex-wrap -mx-3 mb-2">
+          <!-- Delivery package fields -->
+          <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+            <%= dp.label :quantity, class: "block text-gray-700 text-sm font-bold mb-2" %>
+            <%= dp.number_field :quantity, class: "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" %>
+          </div>
+
+          <div class="w-full md:w-1/2 px-3">
+            <%= dp.label :weight, "Weight (kg)", class: "block text-gray-700 text-sm font-bold mb-2" %>
+            <%= dp.text_field :weight, class: "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" %>
+          </div>
+
+          <div class="w-full md:w-1/2 px-3">
+    <%= dp.label :departureCity, class: "block text-gray-700 text-sm font-bold mb-
+2" %>
+            <%= dp.text_field :departureCity, class: "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" %>
+          </div>
+          <div class="w-full md:w-1/2 px-3">
+            <%= dp.label :destinationCity, class: "block text-gray-700 text-sm font-bold mb-2" %>
+            <%= dp.text_field :destinationCity, class: "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" %>
+          </div>
+
+          <div class="w-full md:w-1/2 px-3 mb-4">
+            <%= dp.label :departureDate, "Departure Date", class: "block text-gray-700 text-sm font-bold mb-2" %>
+            <%= dp.date_field :departureDate, class: "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline", placeholder: "YYYY-MM-DD" %>
+          </div>
+
+          <div class="w-full md:w-1/2 px-3 mb-4">
+            <%= dp.label :arrivalDate, "Arrival Date", class: "block text-gray-700 text-sm font-bold mb-2" %>
+            <%= dp.date_field :arrivalDate, class: "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline", placeholder: "YYYY-MM-DD" %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+    <div class="flex justify-end">
+      <%= form.submit "Create Package", class: "inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" %>
+    </div>
+  <% end %>
+
+</div>

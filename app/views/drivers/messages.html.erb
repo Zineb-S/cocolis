@@ -1,0 +1,13 @@
+<%= render 'layouts/drivernav' %>
+<div class="container mx-auto px-4 py-6">
+  <h1 class="text-xl font-semibold mb-4">My Deliveries Conversations</h1>
+
+  <% @deliveries.each do |delivery| %>
+    <% delivery.delivery_packages.each do |delivery_package| %>
+      <div class="bg-white p-6 rounded-lg shadow-lg mb-4">
+        <h2 class="text-lg font-semibold">Package ID: <%= delivery_package.id %></h2>
+        <p><%= link_to 'View Messages', driver_message_details_path(id: delivery_package.id), class: "text-blue-500 hover:underline" %></p>
+      </div>
+    <% end %>
+  <% end %>
+</div>
