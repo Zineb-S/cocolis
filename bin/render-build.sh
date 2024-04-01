@@ -2,7 +2,7 @@
 # exit on error
 set -o errexit
 
-# Drop the existing database
+#  the existing database
 bundle exec rake db:drop
 
 # Create the database
