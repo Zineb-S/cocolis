@@ -13,7 +13,7 @@ class ClientsController < ApplicationController
 
   def log_before_actions
     Rails.logger.debug "Before action called for action: #{action_name} with params: #{params.inspect}"
-    end
+  end
 
   def dashboard
     scope = Delivery.includes(:driver, :delivery_packages).where.not(id: 1).where(fulfilled: false)
@@ -71,8 +71,8 @@ class ClientsController < ApplicationController
                      quantity: 1,
                    }],
       mode: 'payment',
-      success_url: "https://mysite-fwqc.onrender.com/" + "client/messages/#{@delivery_package.id}/details?session_id={CHECKOUT_SESSION_ID}&payment_status=success",
-      cancel_url: "https://mysite-fwqc.onrender.com/" + "client/messages/#{@delivery_package.id}/details?payment_status=cancel",
+      success_url: root_url + "client/messages/#{@delivery_package.id}/details?session_id={CHECKOUT_SESSION_ID}&payment_status=success",
+      cancel_url: root_url + "client/messages/#{@delivery_package.id}/details?payment_status=cancel",
       )
 
     redirect_to stripe_session.url, allow_other_host: true
@@ -123,6 +123,28 @@ class ClientsController < ApplicationController
 
   end
 
+  def unlink_package_action
+    delivery_package = @delivery_package
+    package = delivery_package&.package
+    payment = Payment.find_by(delivery_package_id: delivery_package&.id)
+
+    if delivery_package && package
+      # Unlink the package from the delivery
+      delivery_package.update(delivery_id: 1)
+
+      # Invalidate the payment record associated with this delivery_package, if it exists
+      payment&.destroy
+
+      # Set the package to active again
+      package.update(active: true)
+
+      flash[:notice] = "Package successfully unlinked from the delivery."
+      redirect_to client_messages_path
+    else
+      flash[:alert] = "Could not find the package or delivery package to unlink."
+      redirect_back(fallback_location: client_messages_path)
+    end
+  end
   def messages_details
     unless @delivery_package
       redirect_to client_dashboard_path, alert: "Delivery package not found."
@@ -132,7 +154,10 @@ class ClientsController < ApplicationController
     @messages = Message.where(delivery_package_id: @delivery_package.id).order(created_at: :asc)
     @payment_status = Payment.exists?(delivery_package_id: @delivery_package.id, payment_done: true)
     @existing_review = Review.find_by(delivery_id: @delivery_package.delivery_id, client_id: current_user.id)
-
+    if params[:unlink_package].present?
+      unlink_package_action
+      return # Redirect inside unlink_package_action ends this method execution
+    end
     if params[:mark_as_received].present? && @delivery_package.delivered? && !@delivery_package.received?
       @delivery_package.update(received: true)
       @delivery_package.package.update!(active: 0)
@@ -147,6 +172,8 @@ class ClientsController < ApplicationController
       flash[:notice] = "Payment successful."
     end
   end
+
+
   def show
     if params[:id] == '1'
       Rails.logger.debug "Attempt to access delivery with ID: 1"

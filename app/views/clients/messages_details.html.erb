@@ -1,7 +1,7 @@
 <%= render 'layouts/clientnav' %>
+<%= link_to 'Unlink Package', client_message_details_path(@delivery_package.id, unlink_package: true), method: :get, class: "btn btn-warning" %>
 
 <div class="flex mx-auto px-4 py-6 min-h-screen">
-  <!-- Aside for Status Messages - Left -->
   <aside class="w-full lg:w-1/4 p-4 mr-4 bg-white shadow-lg rounded-lg">
     <h2 class="font-bold text-xl mb-4">Delivery Information</h2>
     <div class="status-messages mb-6">
